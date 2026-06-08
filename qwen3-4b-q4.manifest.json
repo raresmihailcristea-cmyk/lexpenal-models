@@ -1,0 +1,139 @@
+{
+  "name": "Qwen3-4B-Instruct-Q4.mlmodelc",
+  "version": 1,
+  "totalBytes": 2809743901,
+  "files": [
+    {
+      "path": "README.md",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/README.md",
+      "sha256": "2370737fe11fac9e37fce6d07276844a8fa2c2d985cba0bb0c66a57ab95ebb74",
+      "bytes": 686
+    },
+    {
+      "path": "blocks_chunk_0.mlmodelc/analytics/coremldata.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_0.mlmodelc__analytics__coremldata.bin",
+      "sha256": "901c5bef589fc6919c3797e0da8e880f8de678328776a3bc2221a6081129bd30",
+      "bytes": 243
+    },
+    {
+      "path": "blocks_chunk_0.mlmodelc/coremldata.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_0.mlmodelc__coremldata.bin",
+      "sha256": "b1e9c8158f9f4e5ff41e2f4d261a187e2978d0a28df9c717946c515811fc8a95",
+      "bytes": 605
+    },
+    {
+      "path": "blocks_chunk_0.mlmodelc/metadata.json",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_0.mlmodelc__metadata.json",
+      "sha256": "5f6e87897188ce79128ea6ee3921f973fbfd929c0f61b02d8f45a562827563c2",
+      "bytes": 4253
+    },
+    {
+      "path": "blocks_chunk_0.mlmodelc/model.mil",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_0.mlmodelc__model.mil",
+      "sha256": "571bb7450d39e3dc8eef1294be887bdd91d3fd41ec69f062f7bda5735e0859d4",
+      "bytes": 897362
+    },
+    {
+      "path": "blocks_chunk_0.mlmodelc/weights/weight.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_0.mlmodelc__weights__weight.bin",
+      "sha256": "986662415206bfeef8bc6379adc868f415f05a2f701e3efc6e229dc49b724b06",
+      "bytes": 915540736
+    },
+    {
+      "path": "blocks_chunk_1.mlmodelc/analytics/coremldata.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_1.mlmodelc__analytics__coremldata.bin",
+      "sha256": "7b4908932fea3b4066618e307b1fa3f20e10c03fdfac5cc2e4c6c743a475c649",
+      "bytes": 243
+    },
+    {
+      "path": "blocks_chunk_1.mlmodelc/coremldata.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_1.mlmodelc__coremldata.bin",
+      "sha256": "b1e9c8158f9f4e5ff41e2f4d261a187e2978d0a28df9c717946c515811fc8a95",
+      "bytes": 605
+    },
+    {
+      "path": "blocks_chunk_1.mlmodelc/metadata.json",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_1.mlmodelc__metadata.json",
+      "sha256": "fa1b69176b94fd5c322107a59b0fb9535f697bc3c5b6ef93574b9685966aaa9b",
+      "bytes": 4253
+    },
+    {
+      "path": "blocks_chunk_1.mlmodelc/model.mil",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_1.mlmodelc__model.mil",
+      "sha256": "267d751b7f1f8855168dcaed9c43b562a24266c4d2a16771b4ff8481bf8aaef9",
+      "bytes": 899147
+    },
+    {
+      "path": "blocks_chunk_1.mlmodelc/weights/weight.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/blocks_chunk_1.mlmodelc__weights__weight.bin",
+      "sha256": "4482265f9c379303636d11a78370f05c53fe4fff0a6ca0301ccec622857e83a7",
+      "bytes": 915545920
+    },
+    {
+      "path": "config.json",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/config.json",
+      "sha256": "f1f86c807734fb2b2d68f32132cbb66f1f2c40e4aaadab16b9050989debb1ed9",
+      "bytes": 446
+    },
+    {
+      "path": "configuration.json",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/configuration.json",
+      "sha256": "56c362f108bb9f17fc0e7b490b7e8927c03dc4478631b4f771c37728019beaa2",
+      "bytes": 46
+    },
+    {
+      "path": "coreml_config.json",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/coreml_config.json",
+      "sha256": "0b68308b40c0ef9fc2b2259e69d944a70236247944f30cf3440193b5cc59414b",
+      "bytes": 834
+    },
+    {
+      "path": "embeddings_bf16.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/embeddings_bf16.bin",
+      "sha256": "cb3c6990d75832da5c4823553ca619530c43a44e527c4596460f3fd59ff45fb4",
+      "bytes": 777912320
+    },
+    {
+      "path": "llm_config.json",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/llm_config.json",
+      "sha256": "b5df7c48016746cf71905e4f48f4a28dd130c1b4c4cb2fbe0e8d374a4e0ad674",
+      "bytes": 4771
+    },
+    {
+      "path": "lm_head.mlmodelc/analytics/coremldata.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/lm_head.mlmodelc__analytics__coremldata.bin",
+      "sha256": "43d00f8059dae99c6881806b95636b0056523e620d4a1d5f7a22b490bdb9501d",
+      "bytes": 243
+    },
+    {
+      "path": "lm_head.mlmodelc/coremldata.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/lm_head.mlmodelc__coremldata.bin",
+      "sha256": "8dafdb5766d38bd933dfe9b9995e4b19ddf55bcac10a5b389f99b6424d2d86e7",
+      "bytes": 394
+    },
+    {
+      "path": "lm_head.mlmodelc/metadata.json",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/lm_head.mlmodelc__metadata.json",
+      "sha256": "576f884bc429879168f6913b357ee0ccf738443708fdf0e826d5d0eca51d63ee",
+      "bytes": 1840
+    },
+    {
+      "path": "lm_head.mlmodelc/model.mil",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/lm_head.mlmodelc__model.mil",
+      "sha256": "8c15f0fc313d785a67466ec187f84a3ce3475cc76a615b8cb401c65cb3d90500",
+      "bytes": 13849
+    },
+    {
+      "path": "lm_head.mlmodelc/weights/weight.bin",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/lm_head.mlmodelc__weights__weight.bin",
+      "sha256": "c7787e555b3616b1a65b7e5900e874173d2550b691a3bbb829ca65cbd6209236",
+      "bytes": 195721536
+    },
+    {
+      "path": "tokenizer.txt",
+      "url": "https://github.com/raresmihailcristea-cmyk/lexpenal-models/releases/download/qwen3-4b-q4-v1/tokenizer.txt",
+      "sha256": "77009625db0b18e74315dd89557c76feaab57e1d54e3240b442649a3c16ec4fb",
+      "bytes": 3193569
+    }
+  ]
+}
