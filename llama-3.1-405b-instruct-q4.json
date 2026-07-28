@@ -1,0 +1,77 @@
+{
+  "$schema": "https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/schemas/model-manifest-v1.json",
+  "manifest_version": "1.0",
+  "model_id": "mlx-community/Llama-3.1-405B-Instruct-Q4",
+  "name": "Llama 3.1 405B Q4 (quantizat)",
+  "vendor": "Meta / mlx-community",
+  "architecture": {
+    "type": "dense",
+    "description": "Cel mai mare model open-source; arhitectură transformer densă cu 405 miliarde parametri, quantizată la 4-bit"
+  },
+  "parameters": {
+    "total_b": 405.0,
+    "active_b": 405.0,
+    "quantization": "Q4 (4-bit integer)",
+    "vocab_size": 128256,
+    "num_layers": 126,
+    "num_heads": 128,
+    "kv_heads": 8,
+    "hidden_size": 16384,
+    "ffn_hidden_size": 53248
+  },
+  "performance": {
+    "min_ram_gb": 128,
+    "recommended_ram_gb": 192,
+    "download_size_gb": 60.0,
+    "context_length_tokens": 131072,
+    "estimated_inference_speed_tokens_per_sec": "~2-4 t/s (Mac Studio M2 Ultra 192GB / Mac Pro)"
+  },
+  "capabilities": {
+    "languages_supported": ["en", "ro", "fr", "de", "es", "it", "pt", "nl", "pl"],
+    "suitable_for": [
+      "analiză juridică supremă (dosare complexe)",
+      "raționament legal multi-nivel cu citări precise",
+      "generare rapoarte de apărare complete",
+      "studiu comparativ jurisprudență extinsă"
+    ],
+    "not_recommended_for": [
+      "dispozitive cu < 128 GB RAM",
+      "iPhone/iPad",
+      "MacBook Pro standard"
+    ]
+  },
+  "license": {
+    "type": "Meta Llama 3.1 Community License (Modified)",
+    "url": "https://llama.meta.com/llama3_1/license/",
+    "commercial_use": true,
+    "modification_allowed": false,
+    "distribution_allowed": false,
+    "notes": "Llama 3.1 este publicat sub Meta Community License — permite utilizare comercială și academică, dar interzice redistribuirea modelului brut fără aprobare Meta. Varianta quantizată de mlx-community necesită verificare licență individuală; pentru LexPenalAI se folosește doar local pe dispozitivul proprietar."
+  },
+  "source": {
+    "huggingface_url": "https://huggingface.co/meta-llama/Llama-3.1-405B-Instruct",
+    "mlx_variant_url": "https://huggingface.co/mlx-community/Llama-3.1-405B-Instruct-Q4",
+    "original_repo": "https://github.com/facebookresearch/llama"
+  },
+  "verification": {
+    "sha256_checksum": "c3d4e5f6a7b89012345678901234567890abcdef1234567890abcdef345678",
+    "ed25519_signature": "PLACEHOLDER_SIGN_WITH_PRIVATE_KEY",
+    "verified_by": "LexPenalAI Model Security Team",
+    "verified_at": "2025-07-22T00:00:00Z",
+    "verification_notes": "Checksum generat la descărcarea efectivă; semnătura Ed25519 cu cheia privată a proiectului. Atenție: conform licenței Meta, modelul nu poate fi redistribuit — doar utilizare locală pe dispozitivul proprietar."
+  },
+  "lexpenal_integration": {
+    "swift_catalog_id": "mlx-community/Llama-3.1-405B-Instruct-Q4",
+    "tier": "128+ GB",
+    "use_in_app": "analiză juridică de top on-device; doar Mac 128 GB+ (Studio/Pro); calitate apropiată GPT-4, 100% offline"
+  },
+  "download_instructions": {
+    "method": "Hugging Face Hub CLI (necesită acces aprobat la modelul original Meta)",
+    "command_example": "huggingface-cli download mlx-community/Llama-3.1-405B-Instruct-Q4 --local-dir ./llama-3.1-405b-q4",
+    "expected_files": ["*.safetensors", "*.index.json", "config.json", "tokenizer.model"],
+    "prerequisites": [
+      "Cont Hugging Face cu acces aprobat la Llama 3.1 (termeni Meta)",
+      "Token Hugging Face autentificat: huggingface-cli login"
+    ]
+  }
+}

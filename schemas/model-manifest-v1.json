@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/schemas/model-manifest-v1.json",
+  "title": "LexPenalAI Model Manifest",
+  "description": "Schema pentru manifestele de securitate ale modelelor locale LexPenalAI. Fiecare model local are un manifest JSON cu checksum SHA256 și semnătură Ed25519.",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "model_id",
+    "name",
+    "vendor",
+    "architecture",
+    "parameters",
+    "performance",
+    "capabilities",
+    "license",
+    "source",
+    "verification",
+    "lexpenal_integration"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "manifest_version": { "type": "string", "enum": ["1.0"] },
+    "model_id": { "type": "string", "description": "ID-ul complet al modelului pe Hugging Face (ex: 'mlx-community/Qwen3-8B-4bit')" },
+    "name": { "type": "string", "description": "Numele afișat în UI" },
+    "vendor": { "type": "string", "description": "Entitatea care a creat modelul original (ex: 'Meta', 'Mistral AI', 'Microsoft Research')" },
+    
+    "architecture": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "enum": ["dense", "MoE (Mixture of Experts)", "state-space", "hybrid"] },
+        "description": { "type": "string" }
+      }
+    },
+    
+    "parameters": {
+      "type": "object",
+      "required": ["total_b"],
+      "properties": {
+        "total_b": { "type": "number", "minimum": 0, "description": "Totalul parametrilor în miliarde" },
+        "active_b": { "type": "number", "description": "Parametri activi per token (pentru MoE)" },
+        "quantization": { "type": "string" },
+        "vocab_size": { "type": "integer" },
+        "num_layers": { "type": "integer" },
+        "num_heads": { "type": "integer" }
+      }
+    },
+    
+    "performance": {
+      "type": "object",
+      "required": ["min_ram_gb", "download_size_gb", "context_length_tokens"],
+      "properties": {
+        "min_ram_gb": { "type": "integer", "minimum": 4, "description": "RAM minim necesar pentru rulare" },
+        "recommended_ram_gb": { "type": "integer", "description": "RAM recomandat pentru experiență confortabilă" },
+        "download_size_gb": { "type": "number", "exclusiveMinimum": 0 },
+        "context_length_tokens": { "type": "integer", "multipleOf": 1024 },
+        "estimated_inference_speed_tokens_per_sec": { "type": "string" }
+      }
+    },
+    
+    "capabilities": {
+      "type": "object",
+      "required": ["languages_supported"],
+      "properties": {
+        "languages_supported": { "type": "array", "items": { "type": "string", "minLength": 2, "maxLength": 5 } },
+        "suitable_for": { "type": "array", "items": { "type": "string" } },
+        "not_recommended_for": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    
+    "license": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "commercial_use": { "type": "boolean" },
+        "modification_allowed": { "type": "boolean" },
+        "distribution_allowed": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    
+    "source": {
+      "type": "object",
+      "required": ["huggingface_url"],
+      "properties": {
+        "huggingface_url": { "type": "string", "format": "uri" },
+        "mlx_variant_url": { "type": "string", "format": "uri", "description": "Varianta quantizată MLX pe Hugging Face" },
+        "original_repo": { "type": "string", "format": "uri" }
+      }
+    },
+    
+    "verification": {
+      "type": "object",
+      "required": ["sha256_checksum"],
+      "properties": {
+        "sha256_checksum": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+        "ed25519_signature": { "type": "string", "description": "Semnătură Ed25519 baz64 a conținutului manifestului (fără câmpul de semnătură)" },
+        "verified_by": { "type": "string" },
+        "verified_at": { "type": "string", "format": "date-time" },
+        "verification_notes": { "type": "string" }
+      }
+    },
+    
+    "lexpenal_integration": {
+      "type": "object",
+      "required": ["swift_catalog_id"],
+      "properties": {
+        "swift_catalog_id": { "type": "string" },
+        "tier": { "type": "string" },
+        "use_in_app": { "type": "string" }
+      }
+    },
+    
+    "download_instructions": {
+      "type": "object",
+      "properties": {
+        "method": { "type": "string" },
+        "command_example": { "type": "string" },
+        "expected_files": { "type": "array", "items": { "type": "string" } },
+        "prerequisites": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "additionalProperties": false
+}
