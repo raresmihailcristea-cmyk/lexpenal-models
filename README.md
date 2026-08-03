@@ -6,6 +6,41 @@ Acest repository conține manifeste JSON semnate cu modele de securitate (SHA256
 
 ---
 
+## 📁 Convenția de nume a manifestelor
+
+Aplicația LexPenalAI cere manifestul fiecărui model la URL-ul:
+
+```
+https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/<model_id cu "/" înlocuit prin "-">.json
+```
+
+Exemple: `mlx-community-Qwen3-8B-4bit.json`, `microsoft-Phi-3-mini-4k-instruct-4bit.json`.
+Toate cele 12 modele din catalog (10 principale + 2 worker) au manifest sub această convenție.
+Fișierele istorice cu nume scurt (`phi-3-mini-4k-instruct-4bit.json` etc.) rămân pentru compatibilitate.
+
+### Roluri diferite de manifest
+- **Manifestele MLX** (`mlx-community-*.json`, `microsoft-*.json`) — metadate + verificare de
+  integritate (schema `schemas/model-manifest-v1.json`). Greutățile modelelor se descarcă din
+  Hugging Face Hub prin runtime-ul MLX al aplicației.
+- **`qwen3-4b-q4.manifest.json`** — manifest de DESCĂRCARE pentru modelul Core ML de rezervă:
+  listă completă de fișiere cu URL-uri (GitHub Releases) și SHA256 per fișier, consumată direct
+  de descărcătorul aplicației.
+
+### Stadiul verificării
+Câmpurile `verification.sha256_checksum` și `verification.ed25519_signature` sunt goale
+(= „neverificat încă") până când:
+1. `generate_checksums.sh` calculează SHA256 pe greutățile descărcate;
+2. manifestul este semnat Ed25519 cu cheia privată a proiectului (Secret Manager backend).
+
+Aplicația tratează câmpurile goale ca „integritate neverificată" (avertisment), nu ca eroare.
+Valorile de exemplu/placeholder au fost eliminate intenționat: un checksum fals este mai
+periculos decât unul absent.
+
+¹ Ministral-8B și Mistral Large sunt sub Mistral Research License — utilizarea comercială
+necesită acord separat cu Mistral AI.
+
+---
+
 ## 📋 Lista Modelelor Disponibile
 
 | # | Model | Parametri | RAM Min | Dimensiune | Context | Licență |
@@ -13,7 +48,7 @@ Acest repository conține manifeste JSON semnate cu modele de securitate (SHA256
 | 1 | **Phi-3 Mini 4K (4-bit)** | 3.8B | 8 GB | 2.3 GB | 4K tokeni | MIT |
 | 2 | **Qwen3-4B (4-bit)** ⭐ | 4B | 8 GB | 2.4 GB | 32K tokeni | Apache 2.0 |
 | 3 | **Qwen3-8B (4-bit)** 🔥 | 8B | 16 GB | 4.6 GB | 32K tokeni | Apache 2.0 |
-| 4 | **Ministral-8B (4-bit)** | 8B | 16 GB | 4.6 GB | 32K tokeni | Apache 2.0 |
+| 4 | **Ministral-8B (4-bit)** | 8B | 16 GB | 4.6 GB | 32K tokeni | Mistral Research License¹ |
 | 5 | **Qwen3-14B (4-bit)** | 14B | 32 GB | 8.2 GB | 32K tokeni | Apache 2.0 |
 | 6 | **Qwen3-32B (4-bit)** | 32B | 32 GB | 18 GB | 32K tokeni | Apache 2.0 |
 | 7 | **Mixtral 8x7B MoE (4-bit)** 🆕 | 46.7B (12.9B activi) | 64 GB | 26 GB | 32K tokeni | Apache 2.0 |

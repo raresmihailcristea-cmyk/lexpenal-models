@@ -1,0 +1,57 @@
+{
+  "$schema": "https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/schemas/model-manifest-v1.json",
+  "manifest_version": "1.0",
+  "model_id": "mlx-community/Qwen3-0.6B-4bit",
+  "name": "Qwen3-0.6B (worker ultra-ușor)",
+  "vendor": "Alibaba Cloud (Qwen)",
+  "architecture": {
+    "type": "dense"
+  },
+  "parameters": {
+    "total_b": 0.6,
+    "quantization": "4-bit"
+  },
+  "performance": {
+    "min_ram_gb": 32,
+    "recommended_ram_gb": 32,
+    "download_size_gb": 0.5,
+    "context_length_tokens": 32768,
+    "estimated_inference_speed_tokens_per_sec": "~50-70 t/s (Apple M-series)"
+  },
+  "capabilities": {
+    "languages_supported": [
+      "en",
+      "ro",
+      "zh"
+    ],
+    "suitable_for": [
+      "worker ultra-ușor: etichetare și triere rapidă, impact minim pe RAM"
+    ]
+  },
+  "license": {
+    "type": "Apache License 2.0",
+    "url": "https://huggingface.co/Qwen/Qwen3-0.6B/blob/main/LICENSE",
+    "commercial_use": true
+  },
+  "source": {
+    "huggingface_url": "https://huggingface.co/mlx-community/Qwen3-0.6B-4bit"
+  },
+  "verification": {
+    "sha256_checksum": "",
+    "ed25519_signature": "",
+    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
+  },
+  "lexpenal_integration": {
+    "swift_catalog_id": "mlx-community/Qwen3-0.6B-4bit",
+    "tier": "worker",
+    "use_in_app": "worker ultra-ușor: etichetare și triere rapidă, impact minim pe RAM"
+  },
+  "download_instructions": {
+    "method": "Hugging Face Hub (automat, prin runtime-ul MLX din aplicație)",
+    "expected_files": [
+      "*.safetensors",
+      "config.json",
+      "tokenizer.json"
+    ]
+  }
+}

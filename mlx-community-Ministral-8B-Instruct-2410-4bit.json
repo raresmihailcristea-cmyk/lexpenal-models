@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/schemas/model-manifest-v1.json",
+  "manifest_version": "1.0",
+  "model_id": "mlx-community/Ministral-8B-Instruct-2410-4bit",
+  "name": "Ministral-8B (4-bit)",
+  "vendor": "Mistral AI",
+  "architecture": {
+    "type": "dense"
+  },
+  "parameters": {
+    "total_b": 8.0,
+    "quantization": "4-bit"
+  },
+  "performance": {
+    "min_ram_gb": 16,
+    "recommended_ram_gb": 16,
+    "download_size_gb": 4.6,
+    "context_length_tokens": 32768,
+    "estimated_inference_speed_tokens_per_sec": "~10-15 t/s (Apple M-series)"
+  },
+  "capabilities": {
+    "languages_supported": [
+      "en",
+      "ro",
+      "fr",
+      "it",
+      "es"
+    ],
+    "suitable_for": [
+      "alternativă pe limbi latine; română mai naturală"
+    ]
+  },
+  "license": {
+    "type": "Mistral Research License",
+    "url": "https://mistral.ai/licenses/MRL-0.1.md",
+    "commercial_use": false,
+    "notes": "Mistral Research License: utilizarea comercială necesită acord separat cu Mistral AI. Verificați înainte de utilizarea în producție."
+  },
+  "source": {
+    "huggingface_url": "https://huggingface.co/mlx-community/Ministral-8B-Instruct-2410-4bit"
+  },
+  "verification": {
+    "sha256_checksum": "",
+    "ed25519_signature": "",
+    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
+  },
+  "lexpenal_integration": {
+    "swift_catalog_id": "mlx-community/Ministral-8B-Instruct-2410-4bit",
+    "tier": "16 GB",
+    "use_in_app": "alternativă pe limbi latine; română mai naturală"
+  },
+  "download_instructions": {
+    "method": "Hugging Face Hub (automat, prin runtime-ul MLX din aplicație)",
+    "expected_files": [
+      "*.safetensors",
+      "config.json",
+      "tokenizer.json"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/schemas/model-manifest-v1.json",
+  "manifest_version": "1.0",
+  "model_id": "mlx-community/Mixtral-8x7B-Instruct-4bit",
+  "name": "Mixtral 8x7B MoE (4-bit)",
+  "vendor": "Mistral AI",
+  "architecture": {
+    "type": "MoE (Mixture of Experts)"
+  },
+  "parameters": {
+    "total_b": 47.0,
+    "quantization": "4-bit",
+    "active_b": 12.9
+  },
+  "performance": {
+    "min_ram_gb": 64,
+    "recommended_ram_gb": 64,
+    "download_size_gb": 26.0,
+    "context_length_tokens": 32768,
+    "estimated_inference_speed_tokens_per_sec": "~6-10 t/s (Apple M-series)"
+  },
+  "capabilities": {
+    "languages_supported": [
+      "en",
+      "ro",
+      "fr",
+      "it",
+      "es",
+      "de"
+    ],
+    "suitable_for": [
+      "raționament juridic complex cu eficiență RAM (12.9B parametri activi)"
+    ]
+  },
+  "license": {
+    "type": "Apache License 2.0",
+    "url": "https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1",
+    "commercial_use": true
+  },
+  "source": {
+    "huggingface_url": "https://huggingface.co/mlx-community/Mixtral-8x7B-Instruct-4bit"
+  },
+  "verification": {
+    "sha256_checksum": "",
+    "ed25519_signature": "",
+    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
+  },
+  "lexpenal_integration": {
+    "swift_catalog_id": "mlx-community/Mixtral-8x7B-Instruct-4bit",
+    "tier": "64 GB",
+    "use_in_app": "raționament juridic complex cu eficiență RAM (12.9B parametri activi)"
+  },
+  "download_instructions": {
+    "method": "Hugging Face Hub (automat, prin runtime-ul MLX din aplicație)",
+    "expected_files": [
+      "*.safetensors",
+      "config.json",
+      "tokenizer.json"
+    ]
+  }
+}

@@ -25,7 +25,10 @@
     "estimated_inference_speed_tokens_per_sec": "~15-20 t/s (Apple M-series)"
   },
   "capabilities": {
-    "languages_supported": ["en", "ro"],
+    "languages_supported": [
+      "en",
+      "ro"
+    ],
     "suitable_for": [
       "document triere rapida",
       "verificari simple de date",
@@ -52,11 +55,11 @@
     "original_repo": "https://github.com/microsoft/Phi-3CookBook"
   },
   "verification": {
-    "sha256_checksum": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
-    "ed25519_signature": "PLACEHOLDER_SIGN_WITH_PRIVATE_KEY",
+    "sha256_checksum": "",
+    "ed25519_signature": "",
     "verified_by": "LexPenalAI Model Security Team",
     "verified_at": "2025-07-22T00:00:00Z",
-    "verification_notes": "Checksum generat la descărcarea efectivă a fișierului .safetensors; semnătura Ed25519 aplicată cu cheia privată a proiectului"
+    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților, iar semnătura Ed25519 se aplică cu cheia privată a proiectului. Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
   },
   "lexpenal_integration": {
     "swift_catalog_id": "microsoft/Phi-3-mini-4k-instruct-4bit",
@@ -66,6 +69,10 @@
   "download_instructions": {
     "method": "curl sau Hugging Face Hub CLI",
     "command_example": "huggingface-cli download microsoft/Phi-3-mini-4k-instruct --revision main --local-dir ./phi-3-mini-4k",
-    "expected_files": ["model.safetensors", "config.json", "tokenizer.json"]
+    "expected_files": [
+      "model.safetensors",
+      "config.json",
+      "tokenizer.json"
+    ]
   }
 }
