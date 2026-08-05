@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/schemas/model-manifest-v1.json",
   "manifest_version": "1.0",
-  "model_id": "microsoft/Phi-3-mini-4k-instruct-4bit",
+  "model_id": "mlx-community/Phi-3-mini-4k-instruct-4bit",
   "name": "Phi-3 Mini 4K (4-bit)",
   "vendor": "Microsoft Research",
   "architecture": {
@@ -33,7 +33,7 @@
     "commercial_use": true
   },
   "source": {
-    "huggingface_url": "https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-4bit"
+    "huggingface_url": "https://huggingface.co/mlx-community/Phi-3-mini-4k-instruct-4bit"
   },
   "verification": {
     "sha256_checksum": "",
@@ -41,7 +41,7 @@
     "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
   },
   "lexpenal_integration": {
-    "swift_catalog_id": "microsoft/Phi-3-mini-4k-instruct-4bit",
+    "swift_catalog_id": "mlx-community/Phi-3-mini-4k-instruct-4bit",
     "tier": "8 GB",
     "use_in_app": "worker de triere rapidă și verificări simple"
   },

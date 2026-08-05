@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/raresmihailcristea-cmyk/lexpenal-models/main/schemas/model-manifest-v1.json",
   "manifest_version": "1.0",
-  "model_id": "mlx-community/Mixtral-8x7B-Instruct-4bit",
+  "model_id": "mlx-community/Mixtral-8x7B-Instruct-v0.1-4bit",
   "name": "Mixtral 8x7B MoE (4-bit)",
   "vendor": "Mistral AI",
   "architecture": {
@@ -38,7 +38,7 @@
     "commercial_use": true
   },
   "source": {
-    "huggingface_url": "https://huggingface.co/mlx-community/Mixtral-8x7B-Instruct-4bit"
+    "huggingface_url": "https://huggingface.co/mlx-community/Mixtral-8x7B-Instruct-v0.1-4bit"
   },
   "verification": {
     "sha256_checksum": "",
@@ -46,7 +46,7 @@
     "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
   },
   "lexpenal_integration": {
-    "swift_catalog_id": "mlx-community/Mixtral-8x7B-Instruct-4bit",
+    "swift_catalog_id": "mlx-community/Mixtral-8x7B-Instruct-v0.1-4bit",
     "tier": "64 GB",
     "use_in_app": "raționament juridic complex cu eficiență RAM (12.9B parametri activi)"
   },
