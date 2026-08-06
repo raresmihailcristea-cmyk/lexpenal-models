@@ -38,7 +38,7 @@
   },
   "verification": {
     "sha256_checksum": "5da5d7dbaee69df3c586d87c777d970f5c655b05cab7fb02a15d98f4b96e670d",
-    "ed25519_signature": "",
+    "ed25519_signature": "YsnHHptMtpnIDE7gUcNYpt/bccUWKOFnOI+bC1aRQCb+adUuW4qyX4nwG+uaxw3jpSZISKaR7Hez2eThuR79Bg==",
     "verification_notes": "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE fișier în parte — un singur checksum nu poate descrie un model cu mai multe shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași valoare, nu putea trece niciodată.",
     "files": [
       {
