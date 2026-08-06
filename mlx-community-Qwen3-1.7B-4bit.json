@@ -37,7 +37,7 @@
     "huggingface_url": "https://huggingface.co/mlx-community/Qwen3-1.7B-4bit"
   },
   "verification": {
-    "sha256_checksum": "e0e7a1aa05d364708d246c80ee8a199e23b626b560e6ca800f4de329b6e34826",
+    "sha256_checksum": "d52e597fe8048b0f1186670b52c04f5562e725c590987ac799ef5506c00de475",
     "ed25519_signature": "",
     "verification_notes": "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE fișier în parte — un singur checksum nu poate descrie un model cu mai multe shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași valoare, nu putea trece niciodată.",
     "files": [

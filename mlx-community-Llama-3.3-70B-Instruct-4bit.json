@@ -40,7 +40,7 @@
     "huggingface_url": "https://huggingface.co/mlx-community/Llama-3.3-70B-Instruct-4bit"
   },
   "verification": {
-    "sha256_checksum": "75b8c391faf859f848ab43e9071ecd18483770c39ba8ab1c7368d1b524893f8b",
+    "sha256_checksum": "d06e730301368e969c33fc56cb9acf84bde093179115fdaa3d938e57bb1a3e54",
     "ed25519_signature": "",
     "verification_notes": "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE fișier în parte — un singur checksum nu poate descrie un model cu mai multe shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași valoare, nu putea trece niciodată.",
     "files": [

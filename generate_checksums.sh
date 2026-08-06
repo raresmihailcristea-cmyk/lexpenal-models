@@ -103,8 +103,20 @@ for manifest_path in sorted(glob.glob(os.path.join(manifest_dir, "mlx-community-
         skipped += 1
         continue
 
-    # Rezumat stabil peste toate fișierele: se schimbă dacă se schimbă oricare.
-    digest_source = "\n".join(f'{f["path"]}:{f["sha256"]}' for f in files)
+    # REZUMAT CANONIC — acoperă tot ce poate schimba comportamentul aplicației,
+    # nu doar fișierele: un atacator care ar coborî `min_ram_gb` sau ar schimba
+    # `model_id` ar păcăli aplicația fără să atingă niciun octet de greutăți.
+    # Se folosesc DOAR numere întregi și șiruri: nicio formatare de virgulă
+    # mobilă, ca partea Swift să obțină exact aceiași octeți.
+    performance = manifest["performance"]
+    integration = manifest.get("lexpenal_integration") or {}
+    lines = [
+        model_id,
+        str(int(performance["min_ram_gb"])),
+        str(int(performance["context_length_tokens"])),
+        str(integration.get("tier", "")),
+    ] + [f'{f["path"]}:{f["sha256"]}:{int(f["size_bytes"])}' for f in files]
+    digest_source = "\n".join(lines)
     digest = hashlib.sha256(digest_source.encode("utf-8")).hexdigest()
 
     verification = manifest.setdefault("verification", {})
