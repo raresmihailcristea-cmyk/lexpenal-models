@@ -37,14 +37,27 @@
     "huggingface_url": "https://huggingface.co/mlx-community/Qwen3-8B-4bit"
   },
   "verification": {
-    "sha256_checksum": "",
+    "sha256_checksum": "dcf63b20a71320f6bf2e4021f012f801c5405a018c1a021220a3807e69a29c74",
     "ed25519_signature": "",
-    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
+    "verification_notes": "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE fișier în parte — un singur checksum nu poate descrie un model cu mai multe shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași valoare, nu putea trece niciodată.",
+    "files": [
+      {
+        "path": "model.safetensors",
+        "sha256": "f2d29621aab300336ad645567ff38c42aac755513006ef4e8a579cf7ef5256d8",
+        "size_bytes": 4607835174
+      },
+      {
+        "path": "tokenizer.json",
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "size_bytes": 11422654
+      }
+    ],
+    "checksum_source": "huggingface-lfs-oid"
   },
   "lexpenal_integration": {
     "swift_catalog_id": "mlx-community/Qwen3-8B-4bit",
     "tier": "16 GB",
-    "use_in_app": "modelul recomandat pentru analiză juridică locală"
+    "use_in_app": "nivel 16 GB: cel mai capabil model care rulează confortabil pe 16 GB; raționament solid și română corectă pentru analiză juridică"
   },
   "download_instructions": {
     "method": "Hugging Face Hub (automat, prin runtime-ul MLX din aplicație)",

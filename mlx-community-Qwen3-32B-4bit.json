@@ -37,14 +37,42 @@
     "huggingface_url": "https://huggingface.co/mlx-community/Qwen3-32B-4bit"
   },
   "verification": {
-    "sha256_checksum": "",
+    "sha256_checksum": "eb2ab2ede97c5ad1a4886191124ba5ea11602c1bf962a10a38b6064db5d7c8a9",
     "ed25519_signature": "",
-    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
+    "verification_notes": "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE fișier în parte — un singur checksum nu poate descrie un model cu mai multe shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași valoare, nu putea trece niciodată.",
+    "files": [
+      {
+        "path": "model-00001-of-00004.safetensors",
+        "sha256": "c37d8ac8663e5bcfb7334889dcba56e3c6b3d7a9b8643a62c5f8b6105765aee1",
+        "size_bytes": 5366619059
+      },
+      {
+        "path": "model-00002-of-00004.safetensors",
+        "sha256": "2f8fbccad32a2a2f3072ffb8d6adea2790cc0bd84927cc0c44fbaf1d97912867",
+        "size_bytes": 5346575850
+      },
+      {
+        "path": "model-00003-of-00004.safetensors",
+        "sha256": "4412f7fa42e1419455698d3fe2b3c9557badd36a8a5c3a8d3d2439fc2fa6f0de",
+        "size_bytes": 5359025653
+      },
+      {
+        "path": "model-00004-of-00004.safetensors",
+        "sha256": "5cdadd1a77ec47b3ea7799255efb7d15431765874963f55a33f71f43386eb619",
+        "size_bytes": 2357630312
+      },
+      {
+        "path": "tokenizer.json",
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "size_bytes": 11422654
+      }
+    ],
+    "checksum_source": "huggingface-lfs-oid"
   },
   "lexpenal_integration": {
     "swift_catalog_id": "mlx-community/Qwen3-32B-4bit",
-    "tier": "32 GB+",
-    "use_in_app": "calitate locală foarte ridicată; 48 GB+ confortabil"
+    "tier": "32 GB",
+    "use_in_app": "nivel 32 GB: cel mai capabil model care încape în 32 GB; salt real de raționament față de 8B, la 18 GB pe disc"
   },
   "download_instructions": {
     "method": "Hugging Face Hub (automat, prin runtime-ul MLX din aplicație)",

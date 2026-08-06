@@ -37,9 +37,22 @@
     "huggingface_url": "https://huggingface.co/mlx-community/Qwen3-1.7B-4bit"
   },
   "verification": {
-    "sha256_checksum": "",
+    "sha256_checksum": "e0e7a1aa05d364708d246c80ee8a199e23b626b560e6ca800f4de329b6e34826",
     "ed25519_signature": "",
-    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
+    "verification_notes": "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE fișier în parte — un singur checksum nu poate descrie un model cu mai multe shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași valoare, nu putea trece niciodată.",
+    "files": [
+      {
+        "path": "model.safetensors",
+        "sha256": "0e86d9677e519323849eac1bc272caae88567a481ff188c431f70be543d9995f",
+        "size_bytes": 968080210
+      },
+      {
+        "path": "tokenizer.json",
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "size_bytes": 11422654
+      }
+    ],
+    "checksum_source": "huggingface-lfs-oid"
   },
   "lexpenal_integration": {
     "swift_catalog_id": "mlx-community/Qwen3-1.7B-4bit",

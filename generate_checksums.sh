@@ -1,155 +1,155 @@
 #!/usr/bin/env bash
-# generate_checksums.sh — LexPenalAI Model Manifest Verification Tool
-# 
-# Acest script calculează SHA256 pentru fișierele modelului și generează
-# semnături Ed25519 (prin OpenSSL) pentru fiecare manifest.
-# 
-# Utilizare:
-#   ./generate_checksums.sh --model-dir <path-to-downloaded-model>
+# generate_checksums.sh — completează secțiunea `verification` din manifeste.
 #
-# Exemplu:
-#   ./generate_checksums.sh --model-dir ./models/phi-3-mini-4k
+# Două moduri:
+#
+#   --from-huggingface            (implicit, recomandat)
+#       Citește SHA256 direct din API-ul HuggingFace. Fișierele mari sunt stocate
+#       prin Git LFS, iar `lfs.oid` ESTE SHA256-ul conținutului — aceeași valoare
+#       pe care ai obține-o rulând `shasum -a 256` după descărcare. Nu descarcă
+#       greutățile: pentru cele trei modele ale aplicației, asta ar însemna ~63 GB.
+#
+#   --model-dir <cale>
+#       Calculează SHA256 local, dintr-un model deja descărcat. De folosit când
+#       vrei să confirmi că ce ai pe disc corespunde cu ce declară manifestul.
+#
+# Semnătura Ed25519 se aplică peste rezumatul fișierelor, dacă e disponibilă cheia:
+#   export LEXPENAL_ED25519_PRIVKEY=<cheie-privata-hex>
+#
+# Utilizare:
+#   ./generate_checksums.sh
+#   ./generate_checksums.sh --model-dir ~/.cache/huggingface/hub/models--mlx-community--Qwen3-8B-4bit
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MANIFEST_DIR="$SCRIPT_DIR"
-ED25519_PRIVATE_KEY="${LEXPENAL_ED25519_PRIVKEY:-}"
+MODE="huggingface"
+MODEL_DIR=""
 
-# Verificare precondiții
-if [[ -z "$ED25519_PRIVATE_KEY" ]]; then
-    echo "⚠️  AVERTISMENT: Variabila LEXPENAL_ED25519_PRIVKEY nu este setată."
-    echo "   Semnăturile Ed25519 NU vor fi generate (doar SHA256 checksums)."
-    echo ""
-    echo "   Pentru a genera semnături, setează cheia privată:"
-    echo "   export LEXPENAL_ED25519_PRIVKEY=<hex-chiava-privata>"
-    echo ""
-fi
-
-# Funcție: calculează SHA256 pentru un fișier
-calc_sha256() {
-    local file="$1"
-    if [[ "$(uname)" == "Darwin" ]]; then
-        shasum -a 256 "$file" | awk '{print $1}'
-    else
-        sha256sum "$file" | awk '{print $1}'
-    fi
-}
-
-# Funcție: semnează un string cu Ed25519 (OpenSSL)
-sign_ed25519() {
-    local data="$1"
-    if [[ -n "$ED25519_PRIVATE_KEY" ]]; then
-        echo -n "$data" | openssl pkeyutl -sign \
-            -inkey <(echo "$ED25519_PRIVATE_KEY" | xxd -r -p) \
-            -padding raw 2>/dev/null | base64 -w 0 || echo "SIGN_FAILED"
-    else
-        echo "UNVERIFIED_NO_KEY"
-    fi
-}
-
-# Funcție: actualizează un câmp într-un JSON (folosind jq)
-update_json_field() {
-    local file="$1"
-    local field="$2"
-    local value="$3"
-    
-    if command -v jq &>/dev/null; then
-        local tmp=$(mktemp)
-        jq --arg val "$value" ".[\"$field\"] = \$val" "$file" > "$tmp" && mv "$tmp" "$file"
-    else
-        echo "⚠️  jq nu este instalat — actualizare manuală necesară"
-        return 1
-    fi
-}
-
-echo "============================================="
-echo " LexPenalAI Model Manifest Verification Tool"
-echo "============================================="
-echo ""
-
-# Parcurgem toate manifestele din directorul manifests/
-manifest_count=0
-for manifest in "$MANIFEST_DIR"/*.json; do
-    [[ -f "$manifest" ]] || continue
-    
-    filename=$(basename "$manifest")
-    echo "--- Procesare: $filename ---"
-    
-    # Extragem model_id-ul din JSON
-    if command -v jq &>/dev/null; then
-        model_id=$(jq -r '.model_id' "$manifest")
-        echo "  Model ID: $model_id"
-        
-        # Verificăm dacă există fișiere .safetensors în model-dir
-        if [[ -n "${MODEL_DIR:-}" ]]; then
-            safetensor_files=("$MODEL_DIR"/*.safetensors)
-            if [[ ${#safetensor_files[@]} -gt 0 ]]; then
-                echo "  Verificare integritate fișiere..."
-                total_size=0
-                for sf in "${safetensor_files[@]}"; do
-                    size=$(stat -f%z "$sf" 2>/dev/null || stat -c%s "$sf")
-                    sha=$(calc_sha256 "$sf")
-                    echo "    $(basename "$sf"): ${size} bytes | SHA256: $sha"
-                    total_size=$((total_size + size))
-                done
-                echo "  Total: $((total_size / 1073741824)) GB"
-                
-                # Generăm checksum combinat pentru toate safetensors
-                combined_sha=$(cat "${safetensor_files[@]}" | shasum -a 256 | awk '{print $1}')
-                echo "  Combined SHA256: $combined_sha"
-                
-                # Actualizăm câmpul sha256_checksum în manifest
-                update_json_field "$manifest" "sha256_checksum" "$combined_sha"
-            else
-                echo "  ⚠️  Niciun fișier .safetensors găsit în $MODEL_DIR"
-                echo "     Descarcă modelul mai întâi cu: huggingface-cli download ..."
-            fi
-        fi
-        
-        # Generăm semnătura Ed25519 pe conținutul manifestului (fără câmpul de semnătură)
-        if [[ -n "$ED25519_PRIVATE_KEY" ]]; then
-            # Eliminăm temporal câmpul de semnătură pentru a semna restul
-            content_no_sig=$(jq 'del(.verification.ed25519_signature)' "$manifest")
-            signature=$(echo -n "$content_no_sig" | openssl pkeyutl -sign \
-                -inkey <(echo "$ED25519_PRIVATE_KEY" | xxd -r -p) \
-                -padding raw 2>/dev/null | base64 -w 0 || echo "SIGN_FAILED")
-            
-            if [[ "$signature" != "SIGN_FAILED" ]]; then
-                update_json_field "$manifest" "ed25519_signature" "$signature"
-                # Actualizăm și timestamp-ul de verificare
-                update_json_field "$manifest" "verified_at" "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-                echo "  ✓ Semnătură Ed25519 generată și aplicată"
-            else
-                echo "  ⚠️  Eroare la semnarea Ed25519"
-            fi
-        else
-            echo "  ℹ️  Skipped Ed25519 (nu este setată cheia privată)"
-        fi
-        
-    else
-        echo "  ⚠️  jq necesar pentru parsare JSON — instalează cu: brew install jq"
-    fi
-    
-    manifest_count=$((manifest_count + 1))
-    echo ""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --from-huggingface) MODE="huggingface"; shift ;;
+        --model-dir) MODE="local"; MODEL_DIR="$2"; shift 2 ;;
+        -h|--help) sed -n '2,22p' "$0"; exit 0 ;;
+        *) echo "Argument necunoscut: $1" >&2; exit 2 ;;
+    esac
 done
 
-echo "============================================="
-echo " Rezumat: $manifest_count manifest(e) procesat(e)"
-echo "============================================="
+command -v python3 >/dev/null || { echo "python3 este necesar." >&2; exit 1; }
 
-if [[ -n "$ED25519_PRIVATE_KEY" ]]; then
-    # Generăm cheia publică din cea privată pentru verificare ulterioară
-    pubkey_file="$MANIFEST_DIR/ed25519_public_key.pub"
-    if [[ ! -f "$pubkey_file" ]] || ! grep -q "PUBLIC" "$pubkey_file" 2>/dev/null; then
-        openssl pkey -in <(echo "$ED25519_PRIVATE_KEY" | xxd -r -p) \
-            -pubout -outform DER 2>/dev/null > "${pubkey_file}.der" || true
-        echo ""
-        echo "ℹ️  Cheia publică Ed25519 (pentru verificare) necesită extragere separată."
-    fi
+if [[ -z "${LEXPENAL_ED25519_PRIVKEY:-}" ]]; then
+    echo "Notă: LEXPENAL_ED25519_PRIVKEY nu e setată — se scriu doar checksum-urile SHA256."
+    echo "      Semnătura garantează AUTENTICITATEA sursei; checksum-ul garantează INTEGRITATEA."
+    echo ""
 fi
 
-echo ""
-echo "Manifestele sunt gata pentru commit în repository-ul lexpenal-models."
-echo "SHA256 checksum-urile vor fi actualizate automat la descărcarea efectivă a modelelor."
+if [[ "$MODE" == "local" ]]; then
+    [[ -d "$MODEL_DIR" ]] || { echo "Directorul nu există: $MODEL_DIR" >&2; exit 1; }
+    echo "Mod local: calculez SHA256 din $MODEL_DIR"
+    echo "(pentru a scrie în manifest, rulează fără --model-dir; acest mod doar raportează)"
+    find "$MODEL_DIR" -name '*.safetensors' -type f | while read -r file; do
+        printf '  %s  %s\n' "$(shasum -a 256 "$file" | awk '{print $1}')" "$(basename "$file")"
+    done
+    exit 0
+fi
+
+python3 - "$SCRIPT_DIR" <<'PYTHON'
+import glob, hashlib, io, json, os, sys, urllib.request
+
+manifest_dir = sys.argv[1]
+signing_key = os.environ.get("LEXPENAL_ED25519_PRIVKEY", "")
+
+def hf_tree(model_id):
+    url = f"https://huggingface.co/api/models/{model_id}/tree/main?recursive=1"
+    with urllib.request.urlopen(url, timeout=60) as response:
+        return json.load(response)
+
+# Doar fișierele care contează pentru integritate: greutățile și tokenizatorul.
+# Restul sunt fișiere mici de configurare, stocate ca blob-uri git (SHA1), pe
+# care HuggingFace nu le expune ca SHA256.
+def relevant(entry):
+    path = entry.get("path", "")
+    return entry.get("type") == "file" and (
+        path.endswith(".safetensors") or path == "tokenizer.json"
+    )
+
+updated = skipped = 0
+for manifest_path in sorted(glob.glob(os.path.join(manifest_dir, "mlx-community-*.json"))):
+    manifest = json.load(open(manifest_path))
+    model_id = manifest["model_id"]
+    try:
+        tree = hf_tree(model_id)
+    except Exception as error:
+        print(f"  {model_id}: NU s-a putut citi arborele ({error})")
+        skipped += 1
+        continue
+
+    files = []
+    for entry in sorted(tree, key=lambda e: e.get("path", "")):
+        if not relevant(entry):
+            continue
+        oid = (entry.get("lfs") or {}).get("oid")
+        if not oid:
+            # Fișier mic, versionat ca blob git — nu avem SHA256 de la sursă.
+            continue
+        files.append({
+            "path": entry["path"],
+            "sha256": oid,
+            "size_bytes": (entry.get("lfs") or {}).get("size") or entry.get("size", 0)
+        })
+
+    if not files:
+        print(f"  {model_id}: niciun fișier LFS cu SHA256 — manifest neatins")
+        skipped += 1
+        continue
+
+    # Rezumat stabil peste toate fișierele: se schimbă dacă se schimbă oricare.
+    digest_source = "\n".join(f'{f["path"]}:{f["sha256"]}' for f in files)
+    digest = hashlib.sha256(digest_source.encode("utf-8")).hexdigest()
+
+    verification = manifest.setdefault("verification", {})
+    verification["files"] = files
+    verification["sha256_checksum"] = digest
+    verification["checksum_source"] = "huggingface-lfs-oid"
+    verification["verification_notes"] = (
+        "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul "
+        "conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: "
+        "se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE "
+        "fișier în parte — un singur checksum nu poate descrie un model cu mai multe "
+        "shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași "
+        "valoare, nu putea trece niciodată."
+    )
+    if not signing_key:
+        verification["ed25519_signature"] = ""
+
+    with io.open(manifest_path, "w", encoding="utf-8") as handle:
+        json.dump(manifest, handle, ensure_ascii=False, indent=2)
+        handle.write("\n")
+
+    total_gb = sum(f["size_bytes"] for f in files) / 1e9
+    print(f"  {model_id}: {len(files)} fișiere, {total_gb:.1f} GB, rezumat {digest[:16]}…")
+    updated += 1
+
+print(f"\nmanifeste completate: {updated}, sărite: {skipped}")
+PYTHON
+
+if [[ -n "${LEXPENAL_ED25519_PRIVKEY:-}" ]]; then
+    echo ""
+    echo "Semnare Ed25519 peste rezumatul fiecărui manifest…"
+    for manifest in "$SCRIPT_DIR"/mlx-community-*.json; do
+        digest=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['verification']['sha256_checksum'])" "$manifest")
+        signature=$(printf '%s' "$digest" | openssl pkeyutl -sign \
+            -inkey <(printf '%s' "$LEXPENAL_ED25519_PRIVKEY" | xxd -r -p) \
+            -rawin 2>/dev/null | base64 | tr -d '\n' || echo "SIGN_FAILED")
+        python3 - "$manifest" "$signature" <<'SIGN'
+import io, json, sys
+path, signature = sys.argv[1], sys.argv[2]
+manifest = json.load(open(path))
+manifest["verification"]["ed25519_signature"] = signature
+with io.open(path, "w", encoding="utf-8") as handle:
+    json.dump(manifest, handle, ensure_ascii=False, indent=2)
+    handle.write("\n")
+SIGN
+        echo "  $(basename "$manifest"): semnat"
+    done
+fi

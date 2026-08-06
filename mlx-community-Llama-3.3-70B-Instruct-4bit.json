@@ -40,14 +40,62 @@
     "huggingface_url": "https://huggingface.co/mlx-community/Llama-3.3-70B-Instruct-4bit"
   },
   "verification": {
-    "sha256_checksum": "",
+    "sha256_checksum": "75b8c391faf859f848ab43e9071ecd18483770c39ba8ab1c7368d1b524893f8b",
     "ed25519_signature": "",
-    "verification_notes": "NEVERIFICAT ÎNCĂ: checksum-ul se generează cu generate_checksums.sh după descărcarea greutăților .safetensors, iar semnătura Ed25519 se aplică cu cheia privată a proiectului (Secret Manager backend). Aplicația tratează câmpurile goale ca „integritate neverificată”, nu ca eroare."
+    "verification_notes": "SHA256 per fișier, preluat din Git LFS de la sursă (lfs.oid ESTE SHA256-ul conținutului). `sha256_checksum` e rezumatul stabil peste toate fișierele: se schimbă dacă se schimbă oricare dintre ele. Aplicația verifică FIECARE fișier în parte — un singur checksum nu poate descrie un model cu mai multe shard-uri, iar verificarea veche, care compara toate fișierele cu aceeași valoare, nu putea trece niciodată.",
+    "files": [
+      {
+        "path": "model-00001-of-00008.safetensors",
+        "sha256": "461b51eb0c4fa9053c61ff5deadbf279c188d2310cb7286f1b32e272a285de73",
+        "size_bytes": 5272167770
+      },
+      {
+        "path": "model-00002-of-00008.safetensors",
+        "sha256": "c459978d4249ae7f06ad8671c96c76e905603390e2ff0452f358e8517d271209",
+        "size_bytes": 5294649694
+      },
+      {
+        "path": "model-00003-of-00008.safetensors",
+        "sha256": "81e6d2342c9b5c67fb84d4f25aef1662a002c93441e6098d42dcb6ee53c8c7e7",
+        "size_bytes": 5294649717
+      },
+      {
+        "path": "model-00004-of-00008.safetensors",
+        "sha256": "aa51acddaba5e72932832bf41bd3f5deeae06695de89fbbe3a769e2f46bd8e75",
+        "size_bytes": 5294649733
+      },
+      {
+        "path": "model-00005-of-00008.safetensors",
+        "sha256": "c4d93817d2dc082a3fa0ef89c099a4c2e9620101876838ecf18ff795e41ebf00",
+        "size_bytes": 5294649717
+      },
+      {
+        "path": "model-00006-of-00008.safetensors",
+        "sha256": "cb4a7aeb63148ae9a0dff6b948809985199b5a3a6839be0e7f165146bf986add",
+        "size_bytes": 5294649733
+      },
+      {
+        "path": "model-00007-of-00008.safetensors",
+        "sha256": "e8dc0a788d02146246ac39b00ed8d929be3eccb5c7c981e785d617ed482bc346",
+        "size_bytes": 5294649739
+      },
+      {
+        "path": "model-00008-of-00008.safetensors",
+        "sha256": "56044b182a10d0a458f48402e45bb0136348f3f97574c82cf2a49dbbd51d5dcc",
+        "size_bytes": 2648501502
+      },
+      {
+        "path": "tokenizer.json",
+        "sha256": "6b9e4e7fb171f92fd137b777cc2714bf87d11576700a1dcd7a399e7bbe39537b",
+        "size_bytes": 17209920
+      }
+    ],
+    "checksum_source": "huggingface-lfs-oid"
   },
   "lexpenal_integration": {
     "swift_catalog_id": "mlx-community/Llama-3.3-70B-Instruct-4bit",
-    "tier": "64+ GB",
-    "use_in_app": "calitate locală foarte ridicată; Mac Studio/Pro 64 GB+"
+    "tier": "64 GB",
+    "use_in_app": "nivel 64 GB: cel mai capabil model al aplicației; context 128K, esențial pentru dosare voluminoase"
   },
   "download_instructions": {
     "method": "Hugging Face Hub (automat, prin runtime-ul MLX din aplicație)",
