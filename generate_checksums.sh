@@ -25,10 +25,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODE="huggingface"
 MODEL_DIR=""
+KEY_OUT=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --from-huggingface) MODE="huggingface"; shift ;;
+        --new-key) MODE="newkey"; KEY_OUT="$2"; shift 2 ;;
         --model-dir) MODE="local"; MODEL_DIR="$2"; shift 2 ;;
         -h|--help) sed -n '2,22p' "$0"; exit 0 ;;
         *) echo "Argument necunoscut: $1" >&2; exit 2 ;;
@@ -36,6 +38,38 @@ while [[ $# -gt 0 ]]; do
 done
 
 command -v python3 >/dev/null || { echo "python3 este necesar." >&2; exit 1; }
+
+# Generarea unei perechi de chei. Scrie DOAR cheia privată pe disc, cu drepturi
+# 600, și afișează doar cheia publică — valoarea pentru Info.plist. Cheia privată
+# nu apare niciodată pe ecran, deci nici în jurnalul terminalului.
+if [[ "$MODE" == "newkey" ]]; then
+    [[ -n "$KEY_OUT" ]] || { echo "Lipsește calea fișierului de cheie." >&2; exit 2; }
+    [[ -e "$KEY_OUT" ]] && { echo "Fișierul există deja: $KEY_OUT (nu îl suprascriu)." >&2; exit 1; }
+    ( umask 077; openssl genpkey -algorithm ed25519 -out "$KEY_OUT" )
+    chmod 600 "$KEY_OUT"
+    echo "Cheie privată scrisă în: $KEY_OUT"
+    echo "  drepturi 600. NU o comite, NU o trimite nimănui, fă-i o copie de siguranță."
+    echo ""
+    echo "Cheia PUBLICĂ, de pus în ambele Info.plist la LexPenalModelManifestPublicKey:"
+    echo "  $(openssl pkey -in "$KEY_OUT" -pubout -outform DER | tail -c 32 | base64)"
+    exit 0
+fi
+
+# Cheia privată se acceptă fie ca fișier PEM, fie ca 64 de caractere hex (sămânța
+# brută), împachetată aici în PKCS#8. `openssl pkeyutl -inkey` cere PEM/DER;
+# varianta inițială îi dădea 32 de octeți bruți, deci semnarea eșua întotdeauna —
+# tăcut, fiindcă eroarea era înghițită de `|| echo "SIGN_FAILED"`.
+resolve_private_key() {
+    local given="$1" out="$2"
+    if [[ -f "$given" ]]; then cp "$given" "$out"; return; fi
+    local hex="${given//[[:space:]]/}"
+    if [[ ${#hex} -ne 64 || ! "$hex" =~ ^[0-9a-fA-F]+$ ]]; then
+        echo "Cheia privată trebuie să fie calea unui fișier PEM sau 64 de caractere hex." >&2
+        exit 1
+    fi
+    printf '302e020100300506032b657004220420%s' "$hex" | xxd -r -p | \
+        openssl pkey -inform DER -out "$out"
+}
 
 if [[ -z "${LEXPENAL_ED25519_PRIVKEY:-}" ]]; then
     echo "Notă: LEXPENAL_ED25519_PRIVKEY nu e setată — se scriu doar checksum-urile SHA256."
@@ -147,12 +181,17 @@ PYTHON
 
 if [[ -n "${LEXPENAL_ED25519_PRIVKEY:-}" ]]; then
     echo ""
-    echo "Semnare Ed25519 peste rezumatul fiecărui manifest…"
+    KEY_PEM="$(mktemp)"; DIGEST_TMP="$(mktemp)"
+    trap 'rm -f "$KEY_PEM" "$DIGEST_TMP"' EXIT
+    resolve_private_key "$LEXPENAL_ED25519_PRIVKEY" "$KEY_PEM"
+    echo "Semnare Ed25519 peste rezumatul canonic al fiecărui manifest…"
     for manifest in "$SCRIPT_DIR"/mlx-community-*.json; do
         digest=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['verification']['sha256_checksum'])" "$manifest")
-        signature=$(printf '%s' "$digest" | openssl pkeyutl -sign \
-            -inkey <(printf '%s' "$LEXPENAL_ED25519_PRIVKEY" | xxd -r -p) \
-            -rawin 2>/dev/null | base64 | tr -d '\n' || echo "SIGN_FAILED")
+        # Ed25519 semnează mesajul întreg, dintr-o dată: openssl cere un FIȘIER,
+        # nu un canal („unable to determine file size for oneshot operation").
+        printf '%s' "$digest" > "$DIGEST_TMP"
+        signature=$(openssl pkeyutl -sign -inkey "$KEY_PEM" -rawin \
+            -in "$DIGEST_TMP" | base64 | tr -d '\n')
         python3 - "$manifest" "$signature" <<'SIGN'
 import io, json, sys
 path, signature = sys.argv[1], sys.argv[2]
